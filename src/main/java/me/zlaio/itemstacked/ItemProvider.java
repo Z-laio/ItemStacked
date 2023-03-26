@@ -6,8 +6,6 @@ import java.util.Set;
 
 import org.bukkit.inventory.ItemStack;
 
-import me.zlaio.itemstacked.exceptions.ItemNotFoundException;
-
 public class ItemProvider {
     
     private final YAMLFile itemFile;
@@ -27,16 +25,17 @@ public class ItemProvider {
     }
 
     /***
-     * 
+     * Will return the itemstack from the file where it was saved if it has been saved.
+     * Otherwise, will return null
      * @param itemName
      * @return The ItemStack that was saved to the file under the itemName
-     * @throws {@link me.zlaio.itemstacked.exceptions.ItemNotFoundException ItemNotFoundException}
      */
+    
     public ItemStack getItem(String itemName) {
         ItemStack item = itemFile.getConfig().getItemStack("items." + itemName);
 
         if (item == null) {
-            throw new ItemNotFoundException(itemName, itemFile.getName());
+            return null;
         }
 
         return item;

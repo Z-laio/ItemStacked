@@ -10,13 +10,38 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class YAMLFile {
     
-    private final File configFile;
-    private final FileConfiguration config;
+    private File configFile;
+    private FileConfiguration config;
     private final JavaPlugin plugin;
 
     public YAMLFile(String fileName, JavaPlugin plugin) {
         this.plugin = plugin;
+        loadConfiguration(fileName);
+        save();
+    }
 
+    public String getName() {
+        return configFile.getName();
+    }
+
+    public FileConfiguration getConfig() {
+        return config;
+    }
+    
+    private void save() {
+        try {
+            config.save(configFile);
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Couldn't save file (" + configFile.getName() + ")");
+        }
+    }
+
+    public void reload() {
+        save();
+        loadConfiguration(configFile.getName());
+    }
+
+    private void loadConfiguration(String fileName) {
         configFile = new File(plugin.getDataFolder() + fileName + ".yml");
 
         if (!configFile.exists()) {
@@ -32,25 +57,7 @@ public class YAMLFile {
 
         } else config = YamlConfiguration.loadConfiguration(configFile);
         
-        saveFile();
     }
-
-    public String getName() {
-        return configFile.getName();
-    }
-
-    public FileConfiguration getConfig() {
-        return config;
-    }
-    
-    private void saveFile() {
-        try {
-            config.save(configFile);
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Couldn't save file (" + configFile.getName() + ")");
-        }
-    }
-
 
 
 }

@@ -3,3 +3,7 @@ version: 1.0
 author: Zlaio
 api-version: 1.19
 main: me.zlaio.itemstacked.ItemStacked
+commands:
+  itemstacked:
+    aliases: [ "is" ]
+    description: Main ItemStacked command

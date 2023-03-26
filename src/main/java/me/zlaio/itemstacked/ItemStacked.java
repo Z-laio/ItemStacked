@@ -2,8 +2,10 @@ package me.zlaio.itemstacked;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ItemStacked extends JavaPlugin {
+import me.zlaio.itemstacked.commands.ItemStackedCommand;
 
+public class ItemStacked extends JavaPlugin {
+    
     private ItemProvider itemProvider;
 
     @Override
@@ -11,6 +13,8 @@ public class ItemStacked extends JavaPlugin {
         YAMLFile itemFile = new YAMLFile("items", this);
 
         itemProvider = new ItemProvider(itemFile);
+    
+        getCommand("itemstacked").setExecutor(new ItemStackedCommand(itemProvider, itemFile));
     }
     
 }
