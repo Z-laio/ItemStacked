@@ -2,6 +2,7 @@ package me.zlaio.itemstacked.commands;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -16,6 +17,10 @@ public abstract class Command implements CommandExecutor {
 
     public String format(String s) {
         return ChatColor.translateAlternateColorCodes('&', "&r" + s);
+    }
+    
+    public void sendMessage(Player player, String message) {
+     player.sendMessage(format(message));
     }
     
 }
