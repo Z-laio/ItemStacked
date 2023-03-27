@@ -61,13 +61,6 @@ public class RemoveLineSubCommand extends SubCommand {
                 return;
             }
 
-            int loreLines = lore.size();
-
-            if (upperBound > loreLines) {
-                sendMessage(player, "&cUpper bound integer is greater than lore line count");
-                return;
-            }
-
             removeLoreRange(heldItem, lowerBound, upperBound);
 
         } else {
@@ -101,6 +94,17 @@ public class RemoveLineSubCommand extends SubCommand {
     }
 
     private void removeLoreRange(ItemStack item, int lowerBound, int upperBound) {
+
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.getLore();
+
+        //Removing all lore
+        if (upperBound - lowerBound > lore.size()) {
+            meta.setLore(new ArrayList<>());
+            item.setItemMeta(meta);
+            return;
+        }
+
         for (int i = 0; i < upperBound - lowerBound; i++) {
             removeLore(item, lowerBound);
         }

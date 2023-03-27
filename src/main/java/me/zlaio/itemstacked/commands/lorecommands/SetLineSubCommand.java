@@ -95,7 +95,7 @@ public class SetLineSubCommand extends SubCommand {
 
     @Override
     public String getUsage() {
-        return "/is lore set <lineNumber> \"text\"";
+        return "/is lore set <lineNumber> <\"text\">";
     }
 
     @Override

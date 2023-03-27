@@ -69,6 +69,10 @@ public class ItemStackedCommand extends Command implements TabCompleter {
     }
 
     private void sendAllSubCommandSnippets(Player player) {
+        player.sendMessage("&e-----" + COMMAND_PREFIX + "-----");
+        player.sendMessage("&7[] &f- &eoptional parameter");
+        player.sendMessage("&7<> &f- &erequired parameter");
+
         for (SubCommand subCommand : subCommands.values()) {
             player.sendMessage(format("&e" + subCommand.getUsage() + " &f- &7" + subCommand.getDescription()));
         }

@@ -18,9 +18,6 @@ public class DeleteItemSubCommand extends SubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if (! (sender instanceof Player))
-            return;
-
         Player player = (Player) sender;
 
         if (args.length < 2) {

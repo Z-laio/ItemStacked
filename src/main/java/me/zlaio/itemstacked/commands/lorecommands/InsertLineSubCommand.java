@@ -83,7 +83,7 @@ public class InsertLineSubCommand extends SubCommand {
 
     @Override
     public String getUsage() {
-        return "/is lore insert <lineNumber> \"text\"";
+        return "/is lore insert <lineNumber> <\"text\">";
     }
 
     @Override

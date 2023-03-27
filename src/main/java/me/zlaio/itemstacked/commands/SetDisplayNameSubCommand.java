@@ -57,7 +57,7 @@ public class SetDisplayNameSubCommand extends SubCommand {
 
     @Override
     public String getUsage() {
-        return "/is setdisplayname \"text\"";
+        return "/is setdisplayname <\"text\">";
     }
 
     @Override

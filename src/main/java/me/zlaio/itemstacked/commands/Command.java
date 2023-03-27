@@ -8,7 +8,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public abstract class Command implements CommandExecutor {
 
-    private final String COMMAND_PREFIX = "&7[&eItemStacked&7]&e: ";
+    public final String COMMAND_PREFIX = "&7[&eItemStacked&7]&e: ";
 
     abstract public void execute(CommandSender sender, String[] args);
 
