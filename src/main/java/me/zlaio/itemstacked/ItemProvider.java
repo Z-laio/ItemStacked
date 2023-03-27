@@ -39,6 +39,10 @@ public class ItemProvider {
         return itemFile.getConfig().getItemStack("items." + itemName);
     }
 
+    public List<String> getAllSavedItemNames() {
+        return new ArrayList<>(itemFile.getConfig().getConfigurationSection("items").getKeys(false));
+    }
+
     /***
      * 
      * @return A list of all ItemStack instances, deserialized from the file

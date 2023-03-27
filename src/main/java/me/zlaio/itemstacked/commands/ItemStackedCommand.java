@@ -31,6 +31,7 @@ public class ItemStackedCommand extends Command implements TabCompleter {
         addSubCommand("reload", new ReloadSubCommand(itemFile));
         addSubCommand("setdisplayname", new SetDisplayNameSubCommand());
         addSubCommand("lore", new LoreSubCommand());
+        addSubCommand("give", new GiveSubCommand(itemProvider));
     }
 
     private void addSubCommand(String subCommand, SubCommand executor) {
@@ -39,9 +40,6 @@ public class ItemStackedCommand extends Command implements TabCompleter {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-
-        if (!(sender instanceof Player))
-            return;
 
         Player player = (Player) sender;
 
