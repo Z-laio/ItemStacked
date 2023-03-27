@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InsertLineSubCommand extends SubCommand {
@@ -35,16 +34,16 @@ public class InsertLineSubCommand extends SubCommand {
         try {
             lineNumberAsInteger = Integer.parseInt(lineNumberAsString);
         } catch (IllegalArgumentException e) {
-            sendMessage(player, "&cEnter an integer for the line number");
+            sendMessage(player, "&cLine numbers should be integers");
             return;
         }
 
         if (lineNumberAsInteger < 1) {
-            sendMessage(player, "&cEnter an integer greater than 0");
+            sendMessage(player, "&cThe line number should be an integer greater than 0");
             return;
         }
 
-        List<String> itemLore = getLore(heldItem);
+        List<String> itemLore = CommandUtils.getLore(heldItem);
 
         if (lineNumberAsInteger > itemLore.size()) {
             sendMessage(player, "&cLine number too large, use &eset &cinstead");
@@ -65,21 +64,11 @@ public class InsertLineSubCommand extends SubCommand {
 
         insertLoreLine(heldItem, lineNumberAsInteger, loreLine);
         sendMessage(player, "&eLore updated");
-
-    }
-
-    private List<String> getLore(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
-
-        if (meta.hasLore())
-            return meta.getLore();
-
-        return new ArrayList<>();
     }
 
     private void insertLoreLine(ItemStack item, int lineNumber, String lineContent) {
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = getLore(item);
+        List<String> lore = CommandUtils.getLore(item);
 
         lore.add(lineNumber - 1, format(lineContent));
         meta.setLore(lore);

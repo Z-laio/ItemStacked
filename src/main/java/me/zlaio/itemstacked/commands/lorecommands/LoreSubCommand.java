@@ -13,6 +13,7 @@ public class LoreSubCommand extends SubCommand {
     {
         subCommands.put("set", new SetLineSubCommand());
         subCommands.put("insert", new InsertLineSubCommand());
+        subCommands.put("remove", new RemoveLineSubCommand());
     }
 
     @Override
