@@ -7,6 +7,9 @@ import org.bukkit.inventory.ItemStack;
 
 import me.zlaio.itemstacked.ItemProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SaveItemSubCommand extends SubCommand {
 
     private final ItemProvider itemProvider;
@@ -71,5 +74,14 @@ public class SaveItemSubCommand extends SubCommand {
     @Override
     public String getUsage() {
         return "/is saveitem <itemName> [-o]";
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+
+        if (args.length == 2)
+            return List.of("itemName");
+
+        return new ArrayList<>();
     }
 }

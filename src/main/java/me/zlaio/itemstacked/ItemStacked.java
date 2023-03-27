@@ -13,8 +13,10 @@ public class ItemStacked extends JavaPlugin {
         YAMLFile itemFile = new YAMLFile("items", this);
 
         itemProvider = new ItemProvider(itemFile);
-    
-        getCommand("itemstacked").setExecutor(new ItemStackedCommand(itemProvider, itemFile));
+
+        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, itemFile);
+        getCommand("itemstacked").setExecutor(itemStackedCommand);
+        getCommand("itemstacked").setTabCompleter(itemStackedCommand);
     }
     
 }

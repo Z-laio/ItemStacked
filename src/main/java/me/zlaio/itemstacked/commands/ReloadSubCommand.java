@@ -5,7 +5,10 @@ import org.bukkit.entity.Player;
 
 import me.zlaio.itemstacked.YAMLFile;
 
-public class ReloadSubCommand extends SubCommand{
+import java.util.ArrayList;
+import java.util.List;
+
+public class ReloadSubCommand extends SubCommand {
 
     private final YAMLFile itemFile;
 
@@ -29,4 +32,10 @@ public class ReloadSubCommand extends SubCommand{
     public String getUsage() {
         return "/is reload";
     }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+        return new ArrayList<>();
+    }
+
 }

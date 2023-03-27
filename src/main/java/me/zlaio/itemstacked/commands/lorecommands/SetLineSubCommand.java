@@ -97,4 +97,16 @@ public class SetLineSubCommand extends SubCommand {
     public String getUsage() {
         return "/is lore set <lineNumber> \"text\"";
     }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+
+        if (args.length == 3)
+            return List.of("lineNumber");
+
+        if (args.length == 4)
+            return List.of("\"text\"");
+
+        return new ArrayList<>();
+    }
 }

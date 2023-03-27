@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InsertLineSubCommand extends SubCommand {
@@ -83,5 +84,17 @@ public class InsertLineSubCommand extends SubCommand {
     @Override
     public String getUsage() {
         return "/is lore insert <lineNumber> \"text\"";
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+
+        if (args.length == 3)
+            return List.of("lineNumber");
+
+        if (args.length == 4)
+            return List.of("\"text\"");
+
+        return new ArrayList<>();
     }
 }

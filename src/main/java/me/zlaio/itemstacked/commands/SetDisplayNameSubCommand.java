@@ -6,6 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SetDisplayNameSubCommand extends SubCommand {
 
     @Override
@@ -55,5 +58,14 @@ public class SetDisplayNameSubCommand extends SubCommand {
     @Override
     public String getUsage() {
         return "/is setdisplayname \"text\"";
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+
+        if (args.length == 2)
+            return List.of("\"text\"");
+
+        return new ArrayList<>();
     }
 }

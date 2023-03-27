@@ -4,7 +4,9 @@ import me.zlaio.itemstacked.commands.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class LoreSubCommand extends SubCommand {
 
@@ -60,4 +62,17 @@ public class LoreSubCommand extends SubCommand {
         return "/is lore &7[&eset&7|&einsert&7|&eremove&7]";
     }
 
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+
+        if (args.length == 2)
+            return new ArrayList<>(subCommands.keySet());
+
+        String subCommand = args[1];
+
+        if (!hasSubCommand(subCommand))
+            return new ArrayList<>();
+
+        return subCommands.get(subCommand).getTabCompletions(sender, args);
+    }
 }

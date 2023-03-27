@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RemoveLineSubCommand extends SubCommand {
@@ -121,5 +122,17 @@ public class RemoveLineSubCommand extends SubCommand {
     @Override
     public String getUsage() {
         return "/is lore remove <lineNumber/lowerBound> [upperBound]";
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+
+        if (args.length == 3)
+            return List.of("lineNumber/lowerBound");
+
+        if (args.length == 4)
+            return List.of("upperBound");
+
+        return new ArrayList<>();
     }
 }
