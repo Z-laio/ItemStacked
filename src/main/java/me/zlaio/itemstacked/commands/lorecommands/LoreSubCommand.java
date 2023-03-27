@@ -12,6 +12,7 @@ public class LoreSubCommand extends SubCommand {
 
     {
         subCommands.put("set", new SetLineSubCommand());
+        subCommands.put("insert", new InsertLineSubCommand());
     }
 
     @Override
@@ -55,7 +56,7 @@ public class LoreSubCommand extends SubCommand {
 
     @Override
     public String getUsage() {
-        return "/is lore [set|remove]";
+        return "/is lore &7[&eset&7|&einsert&7|&eremove&7]";
     }
 
 }
