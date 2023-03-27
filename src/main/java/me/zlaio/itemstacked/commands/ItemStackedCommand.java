@@ -3,6 +3,7 @@ package me.zlaio.itemstacked.commands;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.zlaio.itemstacked.commands.lorecommands.LoreSubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,6 +27,7 @@ public class ItemStackedCommand extends Command {
         addSubCommand("saveitem", new SaveItemSubCommand(itemProvider));
         addSubCommand("reload", new ReloadSubCommand(itemFile));
         addSubCommand("setdisplayname", new SetDisplayNameSubCommand());
+        addSubCommand("lore", new LoreSubCommand());
     }
 
     private void addSubCommand(String subCommand, SubCommand executor) {
