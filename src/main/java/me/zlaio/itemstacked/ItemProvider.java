@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
+
 public class ItemProvider {
     
     private final YAMLFile itemFile;
@@ -22,23 +24,19 @@ public class ItemProvider {
 
     public void saveItem(String itemName, ItemStack item) {
         itemFile.getConfig().set("items." + itemName, item);
+        itemFile.save();
     }
 
     /***
      * Will return the itemstack from the file where it was saved if it has been saved.
      * Otherwise, will return null
-     * @param itemName
+     * @param itemName What to save the ItemStack instance as
      * @return The ItemStack that was saved to the file under the itemName
      */
-    
+
+    @Nullable
     public ItemStack getItem(String itemName) {
-        ItemStack item = itemFile.getConfig().getItemStack("items." + itemName);
-
-        if (item == null) {
-            return null;
-        }
-
-        return item;
+        return itemFile.getConfig().getItemStack("items." + itemName);
     }
 
     /***

@@ -8,6 +8,8 @@ import net.md_5.bungee.api.ChatColor;
 
 public abstract class Command implements CommandExecutor {
 
+    private final String COMMAND_PREFIX = "&7[&eItemStacked&7]&e: ";
+
     abstract public void execute(CommandSender sender, String[] args);
 
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
@@ -20,7 +22,7 @@ public abstract class Command implements CommandExecutor {
     }
     
     public void sendMessage(Player player, String message) {
-     player.sendMessage(format(message));
+     player.sendMessage(format(COMMAND_PREFIX + message));
     }
     
 }

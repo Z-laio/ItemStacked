@@ -66,7 +66,7 @@ public class ItemStackedCommand extends Command {
 
     private void sendAllSubCommandSnippets(Player player) {
         for (SubCommand subCommand : subCommands.values()) {
-            sendMessage(player, subCommand.getCommandSnippet());
+            player.sendMessage(format("&e" + subCommand.getUsage() + " &f- &7" + subCommand.getDescription()));
         }
     }
 

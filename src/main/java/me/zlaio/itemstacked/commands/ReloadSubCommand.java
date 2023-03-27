@@ -17,12 +17,16 @@ public class ReloadSubCommand extends SubCommand{
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         itemFile.reload();
-        sendMessage(player, "&e'&7" + itemFile.getName() + "&e' &7has been reloaded");
+        sendMessage(player, "&7'&e" + itemFile.getName() + "&7' &ehas been reloaded");
     }
 
     @Override
-    public String getCommandSnippet() {
-        return "reload - reloads the file used to save the item";
+    public String getDescription() {
+        return "Reloads the file that reads/writes ItemStacks";
     }
-    
+
+    @Override
+    public String getUsage() {
+        return "/is reload";
+    }
 }
