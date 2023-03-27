@@ -13,9 +13,12 @@ public class YAMLFile {
     private File configFile;
     private FileConfiguration config;
     private final JavaPlugin plugin;
+    private final String fileName;
 
     public YAMLFile(String fileName, JavaPlugin plugin) {
+        this.fileName = fileName;
         this.plugin = plugin;
+
         loadConfiguration(fileName);
         save();
     }
@@ -28,7 +31,7 @@ public class YAMLFile {
         return config;
     }
     
-    private void save() {
+    public void save() {
         try {
             config.save(configFile);
         } catch (IOException e) {
@@ -38,11 +41,11 @@ public class YAMLFile {
 
     public void reload() {
         save();
-        loadConfiguration(configFile.getName());
+        loadConfiguration(fileName);
     }
 
     private void loadConfiguration(String fileName) {
-        configFile = new File(plugin.getDataFolder() + fileName + ".yml");
+        configFile = new File(plugin.getDataFolder() + File.separator + fileName + ".yml");
 
         if (!configFile.exists()) {
             configFile.getParentFile().mkdirs();
