@@ -32,6 +32,7 @@ public class ItemStackedCommand extends Command implements TabCompleter {
         addSubCommand("setdisplayname", new SetDisplayNameSubCommand());
         addSubCommand("lore", new LoreSubCommand());
         addSubCommand("give", new GiveSubCommand(itemProvider));
+        addSubCommand("delete", new DeleteItemSubCommand(itemProvider));
     }
 
     private void addSubCommand(String subCommand, SubCommand executor) {

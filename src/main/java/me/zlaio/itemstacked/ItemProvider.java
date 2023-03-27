@@ -27,6 +27,11 @@ public class ItemProvider {
         itemFile.save();
     }
 
+    public void deleteItem(String itemName) {
+        itemFile.getConfig().set("items." + itemName, null);
+        itemFile.save();
+    }
+
     /***
      * Will return the itemstack from the file where it was saved if it has been saved.
      * Otherwise, will return null
