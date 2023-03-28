@@ -11,26 +11,26 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class YAMLFile {
 
-    private final File configFile;
-    private final ItemStacked plugin;
+    private static final ItemStacked plugin = ItemStacked.getInstance();
 
+    private final File configFile;
     private FileConfiguration config;
 
-    public YAMLFile(String filePath, String resource, ItemStacked plugin) {
-        this.plugin = plugin;
-
-        configFile = new File(plugin.getDataFolder() + "/" + filePath + ".yml");
+    public YAMLFile(File file, InputStream resource) {
+        this.configFile = file;
 
         if (!configFile.exists()) {
             configFile.getParentFile().mkdirs();
 
             try {
                 configFile.createNewFile();
-            } catch (IOException ignored) {}
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                plugin.getLogger().log(Level.SEVERE, String.format("Couldn't create file '%s'", getName()));
+                return;
+            }
 
-            InputStream inputStream = plugin.getResource(resource);
-
-            config = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
+            config = YamlConfiguration.loadConfiguration(new InputStreamReader(resource));
             saveConfig();
         } else {
             config = YamlConfiguration.loadConfiguration(configFile);

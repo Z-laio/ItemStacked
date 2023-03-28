@@ -1,29 +1,105 @@
 package me.zlaio.itemstacked;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.zlaio.itemstacked.commands.ItemStackedCommand;
 
+import java.io.File;
+import java.util.logging.Level;
+
 public final class ItemStacked extends JavaPlugin {
 
-    private static ItemProvider itemProvider;
+    private static ItemStacked instance;
+
+    private static final String DEFAULT_SAVE_FILE_NAME = "items";
+    private static final File DEFAULT_FILE = new File("plugins/ItemStacked/" + DEFAULT_SAVE_FILE_NAME + ".yml");
 
     private ItemStacked() {}
 
     @Override
     public void onEnable() {
-        YAMLFile itemFile = new YAMLFile("items", "items.yml", this);
+        instance = this;
 
-        itemProvider = new ItemProvider(itemFile, this);
+        boolean shouldUseSaveFileName = getConfig().getBoolean("use-save-file-name");
+        String saveFileName = getSaveFileName(shouldUseSaveFileName);
 
-        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, this, itemFile);
-        getCommand("itemstacked").setExecutor(itemStackedCommand);
-        getCommand("itemstacked").setTabCompleter(itemStackedCommand);
+        if (!shouldUseSaveFileName)
+            return;
 
+        File saveFile = new File(getDataFolder() + "/" + saveFileName + ".yml");
+
+        getItemProvider(saveFile, this);
     }
 
-    public static ItemProvider getItemProvider() {
+    /***
+     * Use this version of the method to set a
+     * specific file location
+     * @param file The file path that the plugin will use to
+     *             save/load items to and from
+     * @return ItemProvider an instance to create custom functionality
+     */
+    public static ItemProvider getItemProvider(File file) {
+        return getItemProvider(file, instance);
+    }
+
+    /***
+     * Use this version of the method to set both a
+     * specific file location and plugin namespace
+     * for persistent data storage on items
+     * @param file The file path that the plugin will use to
+     *             save/load items to and from
+     * @param plugin An instance of a plugin to use that plugin's namespace
+     * @return ItemProvider an instance to create custom functionality
+     */
+    public static ItemProvider getItemProvider(File file, JavaPlugin plugin) {
+        File saveFile = new File(file + ".yml");
+        YAMLFile itemFile = new YAMLFile(saveFile, instance.getResource("items.yml"));
+        ItemProvider itemProvider = new ItemProvider(itemFile, plugin);
+
+        reloadCommands(itemProvider, plugin, itemFile);
+
         return itemProvider;
+    }
+
+    /***
+     * Use this version of the method to set use
+     * a different plugin namespace for persistent
+     * data storage on items
+     * @param plugin An instance of a plugin to use that plugin's namespace
+     * @return ItemProvider an instance to create custom functionality
+     */
+    public static ItemProvider getItemProvider(JavaPlugin plugin) {
+        return getItemProvider(DEFAULT_FILE, plugin);
+    }
+
+    private static void reloadCommands(ItemProvider itemProvider, JavaPlugin plugin, YAMLFile saveFile) {
+        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, plugin, saveFile);
+        instance.getCommand("itemstacked").setExecutor(itemStackedCommand);
+        instance.getCommand("itemstacked").setTabCompleter(itemStackedCommand);
+    }
+
+    private String getSaveFileName(boolean shouldUseSaveFileName) {
+        String saveFileNameField = getConfig().getString("save-file-name");
+        boolean hasSaveFileName;
+
+        if (saveFileNameField == null)
+            hasSaveFileName = false;
+        else
+            hasSaveFileName = !saveFileNameField.isEmpty();
+
+        if (!hasSaveFileName && !shouldUseSaveFileName) {
+            getLogger().log(Level.CONFIG, "Invalid or missing 'save-file-name' field, using default file name "
+                    + DEFAULT_SAVE_FILE_NAME + "'");
+            
+            return DEFAULT_SAVE_FILE_NAME;
+        }
+
+        return saveFileNameField;
+    }
+
+    protected static ItemStacked getInstance() {
+        return instance;
     }
 
 }

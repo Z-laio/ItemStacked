@@ -1,0 +1,10 @@
+#The file name to use when saving items
+#The file will read as, for example, 'items.yml'
+save-file-name: "items"
+
+# Whether to use the file name specified
+# at save-file-name. Mainly intended for use of developers
+# who wish to use a custom file location via the API.
+# If set to false while not using API to set a custom
+# file location, the plugin WILL BREAK
+use-save-file-name: true

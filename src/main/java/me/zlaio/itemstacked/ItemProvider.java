@@ -12,16 +12,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 import javax.annotation.Nullable;
 
 public class ItemProvider {
     
     private final YAMLFile itemFile;
-    private final ItemStacked plugin;
+    private final JavaPlugin plugin;
 
-    public ItemProvider(YAMLFile itemFile, ItemStacked plugin) {
+    public ItemProvider(YAMLFile itemFile, JavaPlugin plugin) {
         this.plugin = plugin;
         this.itemFile = itemFile;
     }
@@ -59,9 +58,6 @@ public class ItemProvider {
      * Will return the itemstack from the file where it was saved if it has been saved.
      * Otherwise, will return null
      * <br><br>
-     * This version of the method will use the ItemStacked
-     * plugin namespace for persistent data containers
-     * <br><br>
      * @param itemName What to save the ItemStack instance as
      * @return The ItemStack that was saved to the file under the itemName
      * @throws InvalidItemConfigurationException if the item has a missing or invalid "material" key and or value
@@ -88,36 +84,12 @@ public class ItemProvider {
             meta.setCustomModelData(customModelData);
         }
 
-        setItemData(itemName, item, this.plugin);
+        setItemData(itemName, item);
 
         meta.setDisplayName(displayName);
         meta.setLore(lore);
 
         item.setItemMeta(meta);
-
-        return item;
-    }
-
-    /***
-     * Will return the ItemStack from the file where it was saved if it has been saved.
-     * Otherwise, will return null
-     * <br><br>
-     * This version of the method will use the namespace
-     * of the plugin that is passed in for persistent
-     * data containers
-     * <br><br>
-     * @param itemName What to save the ItemStack instance as
-     * @return The ItemStack that was saved to the file under the itemName
-     * @throws InvalidItemConfigurationException if the item has a missing or invalid "material" key and or value
-     */
-
-    public ItemStack getItem(String itemName, JavaPlugin plugin) {
-        ItemStack item = getItem(itemName);
-
-        if (item == null)
-            return null;
-
-        setItemData(itemName, item, plugin);
 
         return item;
     }
@@ -146,26 +118,6 @@ public class ItemProvider {
         return savedItems;
     }
 
-    /***
-     * This version of the method will use the namespace
-     * of the plugin passed in for persistent data containers
-     * @return A list of all ItemStack instances, deserialized from the file
-     */
-    public List<ItemStack> getAllItems(JavaPlugin plugin) {
-        Set<String> itemNames = itemFile.getConfig()
-                .getConfigurationSection("items")
-                .getKeys(false);
-
-        List<ItemStack> savedItems = new ArrayList<>();
-
-        for (String itemName : itemNames) {
-            ItemStack itemFromFile = getItem(itemName, plugin);
-            savedItems.add(itemFromFile);
-        }
-
-        return savedItems;
-    }
-
     private void saveItemData(String itemName, ItemStack item) {
         FileConfiguration config = itemFile.getConfig();
 
@@ -182,18 +134,18 @@ public class ItemProvider {
         }
     }
 
-    private void setItemData(String itemName, ItemStack item, JavaPlugin plugin) {
+    private void setItemData(String itemName, ItemStack item) {
         String itemPath = getItemPath(itemName);
         Map<String, String> dataEntries = getDataEntries(itemPath);
 
         for (Map.Entry<String, String> dataEntry : dataEntries.entrySet()) {
             String key = dataEntry.getKey();
             String value = dataEntry.getValue();
-            setItemData(item, key, value, plugin);
+            setItemData(item, key, value);
         }
     }
 
-    private void setItemData(ItemStack item, String key, String value, JavaPlugin plugin) {
+    private void setItemData(ItemStack item, String key, String value) {
         ItemMeta meta = item.getItemMeta();
         PersistentDataContainer container = meta.getPersistentDataContainer();
         container.set(new NamespacedKey(plugin, key), PersistentDataType.STRING, value);
