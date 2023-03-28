@@ -1,6 +1,7 @@
 package me.zlaio.itemstacked.commands;
 
 import me.zlaio.itemstacked.ItemProvider;
+import me.zlaio.itemstacked.exceptions.InvalidItemConfigurationException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -41,7 +42,13 @@ public class GiveSubCommand extends SubCommand {
                 return;
             }
 
-            ItemStack itemToGive = itemProvider.getItem(itemName);
+            ItemStack itemToGive;
+            try {
+                itemToGive = itemProvider.getItem(itemName);
+            } catch (InvalidItemConfigurationException e) {
+                sendMessage(player, "&cThe 'material' key for this item in items.yml is invalid");
+                return;
+            }
 
             if (itemToGive == null) {
                 sendMessage(player, "&cCouldn't find that item in the save file");

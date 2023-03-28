@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import me.zlaio.itemstacked.exceptions.InvalidItemConfigurationException;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nullable;
 
@@ -23,7 +28,18 @@ public class ItemProvider {
      */
 
     public void saveItem(String itemName, ItemStack item) {
-        itemFile.getConfig().set("items." + itemName, item);
+        FileConfiguration config = itemFile.getConfig();
+
+        String itemPath = "items." + itemName + ".";
+
+        Material material = item.getType();
+        String displayName = item.getItemMeta().getDisplayName();
+        List<String> lore = item.getItemMeta().getLore();
+
+        config.set(itemPath + "material", material.toString());
+        config.set(itemPath + "display_name", displayName);
+        config.set(itemPath + "lore", lore);
+
         itemFile.save();
     }
 
@@ -41,7 +57,48 @@ public class ItemProvider {
 
     @Nullable
     public ItemStack getItem(String itemName) {
-        return itemFile.getConfig().getItemStack("items." + itemName);
+
+        if (!getAllSavedItemNames().contains(itemName))
+            return null;
+
+        FileConfiguration config = itemFile.getConfig();
+        String itemPath = "items." + itemName + ".";
+
+        if (config.getString(itemPath + "material") == null)
+            throw new InvalidItemConfigurationException();
+
+        String configMaterial = config.getString(itemPath + "material");
+        Material material = Material.matchMaterial(configMaterial);
+
+        if (material == null)
+            throw new InvalidItemConfigurationException();
+
+        String displayName = config.getString(itemPath + "display_name");
+
+        if (displayName == null)
+            displayName = new ItemStack(material).getItemMeta().getDisplayName();
+
+        List<String> lore = config.getStringList(itemPath + "lore");
+        lore = formatLore(lore);
+
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(displayName);
+        meta.setLore(lore);
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    private List<String> formatLore(List<String> lore) {
+        List<String> formattedLore = new ArrayList<>();
+
+        for (String line : lore)
+            formattedLore.add(ChatColor.translateAlternateColorCodes('&', line));
+
+        return formattedLore;
     }
 
     public List<String> getAllSavedItemNames() {
