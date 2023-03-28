@@ -83,8 +83,14 @@ public class ItemProvider {
         List<String> lore = config.getStringList(itemPath + "lore");
         lore = formatLore(lore);
 
+
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
+
+        if (config.getString(itemPath + "custom_model_data") != null) {
+            int customModelData = config.getInt(itemPath + "custom_model_data");
+            meta.setCustomModelData(customModelData);
+        }
 
         meta.setDisplayName(displayName);
         meta.setLore(lore);

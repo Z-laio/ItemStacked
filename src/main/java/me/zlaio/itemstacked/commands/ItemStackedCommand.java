@@ -1,10 +1,10 @@
 package me.zlaio.itemstacked.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.zlaio.itemstacked.commands.datacommands.DataSubCommand;
 import me.zlaio.itemstacked.commands.lorecommands.LoreSubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -12,16 +12,18 @@ import org.bukkit.entity.Player;
 
 import me.zlaio.itemstacked.ItemProvider;
 import me.zlaio.itemstacked.YAMLFile;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class ItemStackedCommand extends Command implements TabCompleter {
+public final class ItemStackedCommand extends Command implements TabCompleter {
 
     private final ItemProvider itemProvider;
     private final YAMLFile itemFile;
-    private final Map<String, SubCommand> subCommands = new HashMap<>();
+    private final JavaPlugin plugin;
 
-    public ItemStackedCommand(ItemProvider itemProvider, YAMLFile itemFile) {
+    public ItemStackedCommand(ItemProvider itemProvider, JavaPlugin plugin, YAMLFile itemFile) {
         this.itemProvider = itemProvider;
         this.itemFile = itemFile;
+        this.plugin = plugin;
 
         loadSubCommands();
     }
@@ -33,10 +35,7 @@ public class ItemStackedCommand extends Command implements TabCompleter {
         addSubCommand("lore", new LoreSubCommand());
         addSubCommand("give", new GiveSubCommand(itemProvider));
         addSubCommand("delete", new DeleteItemSubCommand(itemProvider));
-    }
-
-    private void addSubCommand(String subCommand, SubCommand executor) {
-        subCommands.put(subCommand, executor);
+        addSubCommand("data", new DataSubCommand(plugin));
     }
 
     @Override
@@ -49,31 +48,24 @@ public class ItemStackedCommand extends Command implements TabCompleter {
             return;
         }
 
-        String arg1 = args[0];
+        String subCommand = args[0];
 
-        if (!hasSubCommand(arg1)) {
+        if (!isSubCommand(subCommand)) {
             sendMessage(player, "&cUnknown command run /is to view all available commands");
             return;
         }
 
-        runSubCommand(arg1, sender, args);
-
+        runSubCommand(subCommand, sender, args);
     }
 
-    private boolean hasSubCommand(String subCommand) {
-        return subCommands.containsKey(subCommand);
-    }
-
-    private void runSubCommand(String subCommand, CommandSender sender, String[] args) {
-        subCommands.get(subCommand).execute(sender, args);
-    }
-
-    private void sendAllSubCommandSnippets(Player player) {
+    @Override
+    public void sendAllSubCommandSnippets(Player player) {
         player.sendMessage(format("&e-----" + COMMAND_PREFIX + "-----"));
         player.sendMessage(format("&7[] &f- &eoptional parameter"));
         player.sendMessage(format("&7<> &f- &erequired parameter"));
 
-        for (SubCommand subCommand : subCommands.values()) {
+        for (Map.Entry<String, SubCommand> entry : getSubCommandEntrySet()) {
+            SubCommand subCommand = entry.getValue();
             player.sendMessage(format("&e" + subCommand.getUsage() + " &f- &7" + subCommand.getDescription()));
         }
     }
@@ -87,14 +79,14 @@ public class ItemStackedCommand extends Command implements TabCompleter {
         //TODO: Add permission check
 
         if (args.length == 1)
-            return new ArrayList<>(subCommands.keySet());
+            return new ArrayList<>(getSubCommandNames());
 
         String subCommand = args[0];
 
-        if (!hasSubCommand(subCommand))
+        if (!isSubCommand(subCommand))
             return new ArrayList<>();
 
-        return subCommands.get(subCommand).getTabCompletions(sender, args);
+        return getTabCompletions(subCommand, sender, args);
     }
 
 }

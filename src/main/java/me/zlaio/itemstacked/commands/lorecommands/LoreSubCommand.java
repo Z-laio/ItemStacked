@@ -5,17 +5,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class LoreSubCommand extends SubCommand {
 
-    private final HashMap<String, SubCommand> subCommands = new HashMap<>();
-
     {
-        subCommands.put("set", new SetLineSubCommand());
-        subCommands.put("insert", new InsertLineSubCommand());
-        subCommands.put("remove", new RemoveLineSubCommand());
+        addSubCommand("set", new SetLineSubCommand());
+        addSubCommand("insert", new InsertLineSubCommand());
+        addSubCommand("remove", new RemoveLineSubCommand());
     }
 
     @Override
@@ -30,7 +27,7 @@ public class LoreSubCommand extends SubCommand {
 
         String subCommand = args[1];
 
-        if (!hasSubCommand(subCommand)) {
+        if (!isSubCommand(subCommand)) {
             sendMessage(player, "&cUnknown command run /is lore to view all available commands");
             return;
         }
@@ -38,19 +35,6 @@ public class LoreSubCommand extends SubCommand {
         runSubCommand(subCommand, sender, args);
     }
 
-    private boolean hasSubCommand(String subCommand) {
-        return subCommands.containsKey(subCommand);
-    }
-
-    private void runSubCommand(String subCommand, CommandSender sender, String[] args) {
-        subCommands.get(subCommand).execute(sender, args);
-    }
-
-    private void sendAllSubCommandSnippets(Player player) {
-        for (SubCommand subCommand : subCommands.values()) {
-            player.sendMessage(format("&e" + subCommand.getUsage() + " &f- &7" + subCommand.getDescription()));
-        }
-    }
 
     @Override
     public String getDescription() {
@@ -66,13 +50,13 @@ public class LoreSubCommand extends SubCommand {
     public List<String> getTabCompletions(CommandSender sender, String[] args) {
 
         if (args.length == 2)
-            return new ArrayList<>(subCommands.keySet());
+            return new ArrayList<>(getSubCommandNames());
 
         String subCommand = args[1];
 
-        if (!hasSubCommand(subCommand))
+        if (!isSubCommand(subCommand))
             return new ArrayList<>();
 
-        return subCommands.get(subCommand).getTabCompletions(sender, args);
+        return getTabCompletions(subCommand, sender, args);
     }
 }

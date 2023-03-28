@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public abstract class SubCommand extends Command{
+public abstract class SubCommand extends Command {
 
     abstract public String getDescription();
 

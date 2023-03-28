@@ -1,6 +1,6 @@
 package me.zlaio.itemstacked.commands.lorecommands;
 
-import me.zlaio.itemstacked.commands.CommandUtils;
+import me.zlaio.itemstacked.CommandUtils;
 import me.zlaio.itemstacked.commands.SubCommand;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RemoveLineSubCommand extends SubCommand {
-
-    // /is lore remove int [int]
 
     @Override
     public void execute(CommandSender sender, String[] args) {

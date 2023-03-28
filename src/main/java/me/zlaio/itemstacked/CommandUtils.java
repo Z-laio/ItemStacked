@@ -1,4 +1,4 @@
-package me.zlaio.itemstacked.commands;
+package me.zlaio.itemstacked;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

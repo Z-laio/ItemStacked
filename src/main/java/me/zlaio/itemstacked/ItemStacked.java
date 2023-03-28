@@ -14,7 +14,7 @@ public final class ItemStacked extends JavaPlugin {
 
         itemProvider = new ItemProvider(itemFile);
 
-        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, itemFile);
+        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, this, itemFile);
         getCommand("itemstacked").setExecutor(itemStackedCommand);
         getCommand("itemstacked").setTabCompleter(itemStackedCommand);
     }

@@ -1,6 +1,6 @@
 package me.zlaio.itemstacked.commands.lorecommands;
 
-import me.zlaio.itemstacked.commands.CommandUtils;
+import me.zlaio.itemstacked.CommandUtils;
 import me.zlaio.itemstacked.commands.SubCommand;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;

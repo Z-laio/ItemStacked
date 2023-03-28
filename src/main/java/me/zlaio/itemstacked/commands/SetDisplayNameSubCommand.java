@@ -1,5 +1,6 @@
 package me.zlaio.itemstacked.commands;
 
+import me.zlaio.itemstacked.CommandUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
