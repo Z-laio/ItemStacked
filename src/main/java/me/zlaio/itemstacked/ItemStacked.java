@@ -4,13 +4,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.zlaio.itemstacked.commands.ItemStackedCommand;
 
-public class ItemStacked extends JavaPlugin {
+public final class ItemStacked extends JavaPlugin {
     
     private ItemProvider itemProvider;
 
     @Override
     public void onEnable() {
-        YAMLFile itemFile = new YAMLFile("items", this);
+        YAMLFile itemFile = new YAMLFile("items", "items.yml", this);
 
         itemProvider = new ItemProvider(itemFile);
 

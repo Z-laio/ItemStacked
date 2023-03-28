@@ -40,12 +40,12 @@ public class ItemProvider {
         config.set(itemPath + "display_name", displayName);
         config.set(itemPath + "lore", lore);
 
-        itemFile.save();
+        itemFile.saveConfig();
     }
 
     public void deleteItem(String itemName) {
         itemFile.getConfig().set("items." + itemName, null);
-        itemFile.save();
+        itemFile.saveConfig();
     }
 
     /***
@@ -77,6 +77,8 @@ public class ItemProvider {
 
         if (displayName == null)
             displayName = new ItemStack(material).getItemMeta().getDisplayName();
+
+        displayName = ChatColor.translateAlternateColorCodes('&', displayName);
 
         List<String> lore = config.getStringList(itemPath + "lore");
         lore = formatLore(lore);

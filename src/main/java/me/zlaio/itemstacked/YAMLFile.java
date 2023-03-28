@@ -2,36 +2,50 @@ package me.zlaio.itemstacked;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class YAMLFile {
-    
-    private File configFile;
-    private FileConfiguration config;
-    private final JavaPlugin plugin;
-    private final String fileName;
 
-    public YAMLFile(String fileName, JavaPlugin plugin) {
-        this.fileName = fileName;
+    private final File configFile;
+    private final ItemStacked plugin;
+
+    private FileConfiguration config;
+
+    public YAMLFile(String filePath, String resource, ItemStacked plugin) {
         this.plugin = plugin;
 
-        loadConfiguration(fileName);
-        save();
+        configFile = new File(plugin.getDataFolder() + "/" + filePath + ".yml");
+
+        if (!configFile.exists()) {
+            configFile.getParentFile().mkdirs();
+
+            try {
+                configFile.createNewFile();
+            } catch (IOException ignored) {}
+
+            InputStream inputStream = plugin.getResource(resource);
+
+            config = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
+            saveConfig();
+        } else {
+            config = YamlConfiguration.loadConfiguration(configFile);
+        }
+    }
+
+    public void reload() {
+        config = YamlConfiguration.loadConfiguration(configFile);
     }
 
     public String getName() {
         return configFile.getName();
     }
 
-    public FileConfiguration getConfig() {
-        return config;
-    }
-    
-    public void save() {
+    public void saveConfig() {
         try {
             config.save(configFile);
         } catch (IOException e) {
@@ -39,28 +53,8 @@ public class YAMLFile {
         }
     }
 
-    public void reload() {
-        save();
-        loadConfiguration(fileName);
+    public FileConfiguration getConfig() {
+        return config;
     }
-
-    private void loadConfiguration(String fileName) {
-        configFile = new File(plugin.getDataFolder() + File.separator + fileName + ".yml");
-
-        if (!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
-
-            try {
-                configFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            config = new YamlConfiguration();
-
-        } else config = YamlConfiguration.loadConfiguration(configFile);
-        
-    }
-
 
 }
