@@ -28,7 +28,7 @@ public class LoreSubCommand extends SubCommand {
         String subCommand = args[1];
 
         if (!isSubCommand(subCommand)) {
-            sendMessage(player, "&cUnknown command run /is lore to view all available commands");
+            sendMessage(player, "&cUnknown command run '/is lore' to view all available commands");
             return;
         }
 

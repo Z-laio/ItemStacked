@@ -1,9 +1,6 @@
 package me.zlaio.itemstacked;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import me.zlaio.itemstacked.commands.ItemStackedCommand;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -15,21 +12,31 @@ public final class ItemStacked extends JavaPlugin {
     private static final String DEFAULT_SAVE_FILE_NAME = "items";
     private static final File DEFAULT_FILE = new File("plugins/ItemStacked/" + DEFAULT_SAVE_FILE_NAME + ".yml");
 
-    private ItemStacked() {}
-
     @Override
     public void onEnable() {
         instance = this;
 
+        saveResource("config.yml", false);
+
+        reload();
+    }
+
+    public void reload() {
         boolean shouldUseSaveFileName = getConfig().getBoolean("use-save-file-name");
         String saveFileName = getSaveFileName(shouldUseSaveFileName);
 
         if (!shouldUseSaveFileName)
             return;
 
-        File saveFile = new File(getDataFolder() + "/" + saveFileName + ".yml");
+        File saveFile = new File(String.format("%s/%s.yml", getDataFolder(), saveFileName));
 
         getItemProvider(saveFile, this);
+    }
+
+    private static void reloadCommands(ItemProvider itemProvider, JavaPlugin plugin, YAMLFile saveFile) {
+        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, plugin, saveFile);
+        instance.getCommand("itemstacked").setExecutor(itemStackedCommand);
+        instance.getCommand("itemstacked").setTabCompleter(itemStackedCommand);
     }
 
     /***
@@ -53,8 +60,7 @@ public final class ItemStacked extends JavaPlugin {
      * @return ItemProvider an instance to create custom functionality
      */
     public static ItemProvider getItemProvider(File file, JavaPlugin plugin) {
-        File saveFile = new File(file + ".yml");
-        YAMLFile itemFile = new YAMLFile(saveFile, instance.getResource("items.yml"));
+        YAMLFile itemFile = new YAMLFile(file, instance.getResource("items.yml"));
         ItemProvider itemProvider = new ItemProvider(itemFile, plugin);
 
         reloadCommands(itemProvider, plugin, itemFile);
@@ -73,11 +79,6 @@ public final class ItemStacked extends JavaPlugin {
         return getItemProvider(DEFAULT_FILE, plugin);
     }
 
-    private static void reloadCommands(ItemProvider itemProvider, JavaPlugin plugin, YAMLFile saveFile) {
-        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, plugin, saveFile);
-        instance.getCommand("itemstacked").setExecutor(itemStackedCommand);
-        instance.getCommand("itemstacked").setTabCompleter(itemStackedCommand);
-    }
 
     private String getSaveFileName(boolean shouldUseSaveFileName) {
         String saveFileNameField = getConfig().getString("save-file-name");

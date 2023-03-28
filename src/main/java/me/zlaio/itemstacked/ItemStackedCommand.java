@@ -1,9 +1,10 @@
-package me.zlaio.itemstacked.commands;
+package me.zlaio.itemstacked;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import me.zlaio.itemstacked.commands.*;
 import me.zlaio.itemstacked.commands.datacommands.DataSubCommand;
 import me.zlaio.itemstacked.commands.lorecommands.LoreSubCommand;
 import org.bukkit.command.CommandSender;
@@ -30,10 +31,10 @@ public final class ItemStackedCommand extends Command implements TabCompleter {
 
     private void loadSubCommands() {
         addSubCommand("saveitem", new SaveItemSubCommand(itemProvider));
-        addSubCommand("reload", new ReloadSubCommand(itemFile));
+        addSubCommand("reload", new ReloadSubCommand(ItemStacked.getInstance()));
         addSubCommand("setdisplayname", new SetDisplayNameSubCommand());
         addSubCommand("lore", new LoreSubCommand());
-        addSubCommand("give", new GiveSubCommand(itemProvider));
+        addSubCommand("give", new GiveSubCommand(itemProvider, itemFile));
         addSubCommand("delete", new DeleteItemSubCommand(itemProvider));
         addSubCommand("data", new DataSubCommand(plugin));
     }

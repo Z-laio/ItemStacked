@@ -1,31 +1,30 @@
 package me.zlaio.itemstacked.commands;
 
+import me.zlaio.itemstacked.ItemStacked;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import me.zlaio.itemstacked.YAMLFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReloadSubCommand extends SubCommand {
 
-    private final YAMLFile itemFile;
+    private final ItemStacked plugin;
 
-    public ReloadSubCommand(YAMLFile itemFile) {
-        this.itemFile = itemFile;
+    public ReloadSubCommand(ItemStacked plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        itemFile.reload();
-        sendMessage(player, "&7'&e" + itemFile.getName() + "&7' &ehas been reloaded");
+        plugin.reload();
+        sendMessage(player, "&ePlugin reloaded");
     }
 
     @Override
     public String getDescription() {
-        return "Reloads the file that reads/writes ItemStacks";
+        return "Reloads the plugin/configuration";
     }
 
     @Override

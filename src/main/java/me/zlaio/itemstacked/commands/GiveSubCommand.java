@@ -1,6 +1,7 @@
 package me.zlaio.itemstacked.commands;
 
 import me.zlaio.itemstacked.ItemProvider;
+import me.zlaio.itemstacked.YAMLFile;
 import me.zlaio.itemstacked.exceptions.InvalidItemConfigurationException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -13,9 +14,11 @@ import java.util.List;
 public class GiveSubCommand extends SubCommand {
 
     private final ItemProvider itemProvider;
+    private final YAMLFile itemFile;
 
-    public GiveSubCommand(ItemProvider itemProvider) {
+    public GiveSubCommand(ItemProvider itemProvider, YAMLFile itemFile) {
         this.itemProvider = itemProvider;
+        this.itemFile = itemFile;
     }
 
     @Override
@@ -45,12 +48,12 @@ public class GiveSubCommand extends SubCommand {
             try {
                 itemToGive = itemProvider.getItem(itemName);
             } catch (InvalidItemConfigurationException e) {
-                sendMessage(player, "&cThe 'material' key for this item in items.yml is invalid");
+                sendMessage(player, String.format("&cThe 'material' key for this item in '%s' is invalid", itemFile.getName()));
                 return;
             }
 
             if (itemToGive == null) {
-                sendMessage(player, "&cCouldn't find that item in the save file");
+                sendMessage(player, String.format("&cCouldn't find that item in '%s'", itemFile.getName()));
                 return;
             }
 
@@ -64,7 +67,7 @@ public class GiveSubCommand extends SubCommand {
             ItemStack itemToGive = itemProvider.getItem(itemName);
 
             if (itemToGive == null) {
-                sendMessage(player, "&cCouldn't find that item in the save file");
+                sendMessage(player, String.format("&cCouldn't find that item in '%s'", itemFile.getName()));
                 return;
             }
 

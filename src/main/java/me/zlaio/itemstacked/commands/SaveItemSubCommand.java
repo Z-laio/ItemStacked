@@ -62,7 +62,7 @@ public class SaveItemSubCommand extends SubCommand {
             return;
         }
 
-        sendMessage(player, "&eSaved item &7'&e" + itemToBeSavedName.toLowerCase() + "&7'");
+        sendMessage(player, String.format("&eSaved item &7'&e%s&7'", itemToBeSavedName));
         itemProvider.saveItem(itemToBeSavedName, heldItem);
     }
 

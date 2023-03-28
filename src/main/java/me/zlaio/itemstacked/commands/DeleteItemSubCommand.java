@@ -27,7 +27,7 @@ public class DeleteItemSubCommand extends SubCommand {
 
         String itemName = args[1];
         itemProvider.deleteItem(itemName);
-        sendMessage(player, "&eItem &7'&e" + itemName + "&7'&e has been deleted");
+        sendMessage(player, String.format("&eItem &7'&e%s&7'&e has been deleted", itemName));
     }
 
     @Override
