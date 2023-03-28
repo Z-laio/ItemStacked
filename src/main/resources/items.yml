@@ -1,0 +1,6 @@
+items:
+  template_item:
+    material: BOOK
+    display_name: "&aTemplate Item"
+    lore:
+      - "&aThis is some lore!"
