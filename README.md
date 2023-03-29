@@ -1,2 +1,4 @@
 # ItemStacked
-A dev-tool to help create and save ItemStacks
+A lightweight plugin to streamline the creation of ItemStacks
+
+sfsf
