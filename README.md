@@ -20,8 +20,8 @@ Creating custom items can be a pain in development, lets make it a little easier
 ``/is give <player> <itemName> <amount>``
 - Will give a player an item from the save file
 
-``/is saveitem``
-- Saves a held item out to the save file
+``/is saveitem <name>``
+- Saves a held item out to the save file under the specified ``<name>``
 
 ``/is delete``
 - Deletes an item from the save file
