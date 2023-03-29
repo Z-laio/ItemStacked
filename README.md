@@ -1,5 +1,4 @@
-# ItemStacked
-A lightweight plugin to streamline the creation of ItemStacks
+# ItemStacked - A lightweight plugin to streamline the creation of ItemStacks
 
 Creating custom items can be a pain in development, lets make it a little easier.
 
