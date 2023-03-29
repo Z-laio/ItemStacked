@@ -9,13 +9,13 @@ Creating custom items can be a pain in development, lets make it a little easier
 - Reloads the plugin configuration
 
 ``/is lore [set|insert|remove]``
-- Alters the lines of lore on an item
+- Alters the lines of lore on a held item
 
 ``/is data [pdc|custom_model_data] [set|remove]``
-- Modifies the data of an item
+- Modifies the data of a held item
 
 ``/is setdisplayname``
-- Sets the display name of an item
+- Sets the display name of a held item
 
 ``/is give <player> <itemName> <amount>``
 - Will give a player an item from the save file
