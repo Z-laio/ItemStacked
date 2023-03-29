@@ -6,6 +6,7 @@ import me.zlaio.itemstacked.exceptions.InvalidItemConfigurationException;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -206,7 +207,12 @@ public class ItemProvider {
         FileConfiguration config = itemFile.getConfig();
         String itemPath = getItemPath(itemName);
 
+        ConfigurationSection dataSection = config.getConfigurationSection(itemPath + "data");
+
         Map<String, String> dataEntries = new HashMap<>();
+
+        if (dataSection == null)
+            return dataEntries;
 
         for (String key : config.getConfigurationSection(itemPath + "data").getKeys(false)) {
             String value = config.getString(itemPath + "data." + key);
