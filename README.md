@@ -27,5 +27,3 @@ Creating custom items can be a pain in development, lets make it a little easier
 - Deletes an item from the save file
 
 # For Developers
-The whole purpose of this plugin is really to target developers
-who find themselves working with a lot of custom items. So heres an API!
