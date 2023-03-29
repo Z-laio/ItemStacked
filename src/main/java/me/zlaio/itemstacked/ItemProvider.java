@@ -84,7 +84,7 @@ public class ItemProvider {
             meta.setCustomModelData(customModelData);
         }
 
-        setItemData(itemName, item);
+        setItemData(itemName, meta);
 
         meta.setDisplayName(displayName);
         meta.setLore(lore);
@@ -134,22 +134,20 @@ public class ItemProvider {
         }
     }
 
-    private void setItemData(String itemName, ItemStack item) {
+    private void setItemData(String itemName, ItemMeta meta) {
         String itemPath = getItemPath(itemName);
-        Map<String, String> dataEntries = getDataEntries(itemPath);
+        Map<String, String> dataEntries = getDataEntries(itemName);
 
         for (Map.Entry<String, String> dataEntry : dataEntries.entrySet()) {
             String key = dataEntry.getKey();
             String value = dataEntry.getValue();
-            setItemData(item, key, value);
+            setItemData(meta, key, value);
         }
     }
 
-    private void setItemData(ItemStack item, String key, String value) {
-        ItemMeta meta = item.getItemMeta();
+    private void setItemData(ItemMeta meta, String key, String value) {
         PersistentDataContainer container = meta.getPersistentDataContainer();
         container.set(new NamespacedKey(plugin, key), PersistentDataType.STRING, value);
-        item.setItemMeta(meta);
     }
 
     private String getItemPath(String itemName) {
