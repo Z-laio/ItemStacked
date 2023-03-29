@@ -5,12 +5,14 @@ Creating custom items can be a pain in development, lets make it a little easier
 
 # Commands
 **Permission for all these commands:** ``itemstacked.create``
-```
-/is reload
-/is lore
+
+``/is reload``
+- Reloads the plugin configuration
+``/is lore [set|insert|remove]``
+- Alterts the lines of lore on an item
 /is data
 /is setdisplayname
 /is give
 /is saveitem
 /is delete
-```
+
