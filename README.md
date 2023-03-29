@@ -8,6 +8,7 @@ Creating custom items can be a pain in development, lets make it a little easier
 
 ``/is reload``
 - Reloads the plugin configuration
+
 ``/is lore [set|insert|remove]``
 - Alterts the lines of lore on an item
 /is data
