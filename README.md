@@ -26,3 +26,4 @@ Creating custom items can be a pain in development, lets make it a little easier
 ``/is delete``
 - Deletes an item from the save file
 
+#For Developers
