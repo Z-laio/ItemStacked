@@ -42,6 +42,12 @@ public abstract class Command implements CommandExecutor {
     }
 
     public void sendAllSubCommandSnippets(Player player) {
+        String prefix = COMMAND_PREFIX.replace(":", "");
+
+        player.sendMessage(format("&e-----" + prefix + "-----"));
+        player.sendMessage(format("&7[] &f- &eoptional parameter"));
+        player.sendMessage(format("&7<> &f- &erequired parameter"));
+
         for (Map.Entry<String, SubCommand> entry : getSubCommandEntrySet()) {
             SubCommand subCommand = entry.getValue();
             player.sendMessage(format("&e" + subCommand.getUsage() + " &f- &7" + subCommand.getDescription()));

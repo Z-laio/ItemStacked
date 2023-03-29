@@ -15,23 +15,27 @@ import me.zlaio.itemstacked.ItemProvider;
 import me.zlaio.itemstacked.YAMLFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class ItemStackedCommand extends Command implements TabCompleter {
+public class ItemStackedCommand extends Command implements TabCompleter {
 
     private final ItemProvider itemProvider;
     private final YAMLFile itemFile;
     private final JavaPlugin plugin;
 
-    public ItemStackedCommand(ItemProvider itemProvider, JavaPlugin plugin, YAMLFile itemFile) {
+    public ItemStackedCommand(ItemProvider itemProvider, JavaPlugin plugin, YAMLFile itemFile, boolean commandsAreEnabled) {
         this.itemProvider = itemProvider;
         this.itemFile = itemFile;
         this.plugin = plugin;
 
-        loadSubCommands();
+        if (commandsAreEnabled)
+            loadSubCommands();
+        else
+            addSubCommand("huh?", new WhereAreMyCommandsSubCommand());
+
+        addSubCommand("reload", new ReloadSubCommand(ItemStacked.getInstance()));
     }
 
     private void loadSubCommands() {
         addSubCommand("saveitem", new SaveItemSubCommand(itemProvider));
-        addSubCommand("reload", new ReloadSubCommand(ItemStacked.getInstance()));
         addSubCommand("setdisplayname", new SetDisplayNameSubCommand());
         addSubCommand("lore", new LoreSubCommand());
         addSubCommand("give", new GiveSubCommand(itemProvider, itemFile));
@@ -57,18 +61,6 @@ public final class ItemStackedCommand extends Command implements TabCompleter {
         }
 
         runSubCommand(subCommand, sender, args);
-    }
-
-    @Override
-    public void sendAllSubCommandSnippets(Player player) {
-        player.sendMessage(format("&e-----" + COMMAND_PREFIX + "-----"));
-        player.sendMessage(format("&7[] &f- &eoptional parameter"));
-        player.sendMessage(format("&7<> &f- &erequired parameter"));
-
-        for (Map.Entry<String, SubCommand> entry : getSubCommandEntrySet()) {
-            SubCommand subCommand = entry.getValue();
-            player.sendMessage(format("&e" + subCommand.getUsage() + " &f- &7" + subCommand.getDescription()));
-        }
     }
 
     @Override

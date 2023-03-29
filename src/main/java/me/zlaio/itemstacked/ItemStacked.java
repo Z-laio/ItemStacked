@@ -7,34 +7,12 @@ import java.util.logging.Level;
 
 public final class ItemStacked extends JavaPlugin {
 
-    private static ItemStacked instance;
-
     private static final String DEFAULT_SAVE_FILE_NAME = "items";
     private static final File DEFAULT_FILE = new File("plugins/ItemStacked/" + DEFAULT_SAVE_FILE_NAME + ".yml");
-
-    @Override
-    public void onEnable() {
-        instance = this;
-
-        saveResource("config.yml", false);
-
-        reload();
-    }
-
-    public void reload() {
-        boolean shouldUseSaveFileName = getConfig().getBoolean("use-save-file-name");
-        String saveFileName = getSaveFileName(shouldUseSaveFileName);
-
-        if (!shouldUseSaveFileName)
-            return;
-
-        File saveFile = new File(String.format("%s/%s.yml", getDataFolder(), saveFileName));
-
-        getItemProvider(saveFile, this);
-    }
+    private static ItemStacked instance;
 
     private static void reloadCommands(ItemProvider itemProvider, JavaPlugin plugin, YAMLFile saveFile) {
-        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, plugin, saveFile);
+        ItemStackedCommand itemStackedCommand = new ItemStackedCommand(itemProvider, plugin, saveFile, true);
         instance.getCommand("itemstacked").setExecutor(itemStackedCommand);
         instance.getCommand("itemstacked").setTabCompleter(itemStackedCommand);
     }
@@ -79,6 +57,39 @@ public final class ItemStacked extends JavaPlugin {
         return getItemProvider(DEFAULT_FILE, plugin);
     }
 
+    protected static ItemStacked getInstance() {
+        return instance;
+    }
+
+    @Override
+    public void onEnable() {
+        instance = this;
+
+        saveResource("config.yml", false);
+
+        reload();
+    }
+
+    public void reload() {
+        reloadConfig();
+
+        boolean shouldUseSaveFileName = getConfig().getBoolean("use-save-file-name");
+        String saveFileName = getSaveFileName(shouldUseSaveFileName);
+
+        //Only register /is huh? command
+        if (!shouldUseSaveFileName) {
+            ItemStackedCommand itemStackedCommand = new ItemStackedCommand(null, null, null, shouldUseSaveFileName);
+            instance.getCommand("itemstacked").setExecutor(itemStackedCommand);
+            instance.getCommand("itemstacked").setTabCompleter(itemStackedCommand);
+
+            return;
+        }
+
+
+        File saveFile = new File(String.format("%s/%s.yml", getDataFolder(), saveFileName));
+
+        getItemProvider(saveFile, this);
+    }
 
     private String getSaveFileName(boolean shouldUseSaveFileName) {
         String saveFileNameField = getConfig().getString("save-file-name");
@@ -92,15 +103,11 @@ public final class ItemStacked extends JavaPlugin {
         if (!hasSaveFileName && !shouldUseSaveFileName) {
             getLogger().log(Level.CONFIG, "Invalid or missing 'save-file-name' field, using default file name "
                     + DEFAULT_SAVE_FILE_NAME + "'");
-            
+
             return DEFAULT_SAVE_FILE_NAME;
         }
 
         return saveFileNameField;
-    }
-
-    protected static ItemStacked getInstance() {
-        return instance;
     }
 
 }
